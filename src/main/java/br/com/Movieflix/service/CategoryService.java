@@ -1,6 +1,7 @@
 package br.com.Movieflix.service;
 
 import br.com.Movieflix.entity.Category;
+import br.com.Movieflix.mapper.CategoryMapper;
 import br.com.Movieflix.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,18 @@ public class CategoryService {
 
     public Optional<Category> findByID (Long id) {
         return categoryRepository.findById(id);
+    }
+
+    public Optional<Category> update(Long id, Category updatedCategory) {
+        Optional<Category> newCategory = categoryRepository.findById(id);
+        if (newCategory.isPresent()){
+            Category category = newCategory.get();
+            category.setName(updatedCategory.getName());
+
+            categoryRepository.save(category);
+            return Optional.of(category);
+        }
+        return Optional.empty();
     }
 
     public void deletarCategory(Long id) {

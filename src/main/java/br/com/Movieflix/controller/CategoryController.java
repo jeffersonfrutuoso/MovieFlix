@@ -44,6 +44,13 @@ public class CategoryController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, @RequestBody CategoryRequest request) {
+        return categoryService.update(id, CategoryMapper.toCategory(request))
+                .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar (@PathVariable Long id) {
         categoryService.deletarCategory(id);
