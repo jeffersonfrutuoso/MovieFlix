@@ -43,6 +43,13 @@ public class StreamingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<StreamingResponse> update(@PathVariable Long id, @RequestBody StreamingRequest request) {
+        return streamingService.update(id, StreamingMapper.toStreaming(request))
+                .map(streaming -> ResponseEntity.ok(StreamingMapper.toStreamingResponse(streaming)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarStreaming(@PathVariable Long id) {
         streamingService.deletarStreamingById(id);
