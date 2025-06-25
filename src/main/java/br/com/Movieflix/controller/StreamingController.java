@@ -6,6 +6,7 @@ import br.com.Movieflix.entity.Streaming;
 import br.com.Movieflix.mapper.CategoryMapper;
 import br.com.Movieflix.mapper.StreamingMapper;
 import br.com.Movieflix.service.StreamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class StreamingController {
     }
 
     @PostMapping()
-    public ResponseEntity<StreamingResponse> addStreaming(@RequestBody StreamingRequest streamingRequest) {
+    public ResponseEntity<StreamingResponse> addStreaming(@Valid @RequestBody StreamingRequest streamingRequest) {
         Streaming newStreaming = StreamingMapper.toStreaming(streamingRequest);
         Streaming savedStreaming = streamingService.saveStreaming(newStreaming);
         return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toStreamingResponse(savedStreaming));
@@ -45,7 +46,7 @@ public class StreamingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StreamingResponse> update(@PathVariable Long id, @RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> update(@PathVariable Long id, @Valid @RequestBody StreamingRequest request) {
         return streamingService.update(id, StreamingMapper.toStreaming(request))
                 .map(streaming -> ResponseEntity.ok(StreamingMapper.toStreamingResponse(streaming)))
                 .orElse(ResponseEntity.notFound().build());
